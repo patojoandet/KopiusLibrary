@@ -10,7 +10,6 @@ namespace KopiusLibrary.Model.Entities
         public string Address { get; set; }
         public string City { get; set; }
         public IEnumerable<Vendor> Vendors { get; set; }
-        [JsonIgnore]
         public IEnumerable<Book> Books { get; set; }
     }
 }

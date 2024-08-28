@@ -1,11 +1,11 @@
-﻿using KopiusLibrary.Model.Entities;
+﻿using KopiusLibrary.Model.DTO;
 using KopiusLibrary.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KopiusLibrary.Controllers
 {
-    //[Authorize]
     [ApiController]
+    //[Authorize]
     [Route("api/[controller]")]
     public class BookController : ControllerBase
     {
@@ -22,13 +22,12 @@ namespace KopiusLibrary.Controllers
             IEnumerable<BookDTO> books = bookRepository.Get().ToList();
             return books.Any() ? Ok(books) : NotFound();
         }
-
-       [HttpGet("{title}")]
-       public ActionResult<IEnumerable<Book>> GetByName(string title)
-       {
-            return bookRepository.GetByName(title).ToList();
-       }
-
+        [HttpGet("{title}")]
+        public ActionResult<IEnumerable<BookDTO>> GetByName(string title)
+        {
+            IEnumerable<BookDTO> books = bookRepository.GetByName(title).ToList();
+            return books.Any() ? Ok(books) : NotFound();
+        }
         //[HttpPost]
         //public ActionResult Post([FromBody] Book book)
         //{
