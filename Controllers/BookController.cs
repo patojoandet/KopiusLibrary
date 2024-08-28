@@ -17,9 +17,9 @@ namespace KopiusLibrary.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Book>> Books()
+        public ActionResult<IEnumerable<BookDTO>> Books()
         {
-            IEnumerable<Book> books = bookRepository.Get().ToList();
+            IEnumerable<BookDTO> books = bookRepository.Get().ToList();
             return books.Any() ? Ok(books) : NotFound();
         }
 

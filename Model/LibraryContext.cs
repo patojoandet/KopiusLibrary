@@ -25,6 +25,8 @@ namespace KopiusLibrary.Model
         public DbSet<Tax> Taxes { get; set; }
         public DbSet<DocumentItem> DocumentItems { get; set; }
         public DbSet<Price> Prices { get; set; }
+        public DbSet<AuthorBook> AuthorBooks { get; set; }
+        public DbSet<BookGenre> BookGenres { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,7 +49,8 @@ namespace KopiusLibrary.Model
             modelBuilder.Entity<Vendor>().ToTable("Vendor");
             modelBuilder.Entity<Price>().ToTable("Price");
             modelBuilder.Entity<DocumentItem>().ToTable("DocumentItem");
-
+            modelBuilder.Entity<AuthorBook>().ToTable("AuthorBook");
+            modelBuilder.Entity<BookGenre>().ToTable("BookGenre");
         }
     }
 }
