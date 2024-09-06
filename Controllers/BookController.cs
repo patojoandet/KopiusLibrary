@@ -1,6 +1,9 @@
-﻿using KopiusLibrary.Model.DTO;
+﻿using AutoMapper;
+using KopiusLibrary.Model.DTO;
+using KopiusLibrary.Model.Entities;
 using KopiusLibrary.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace KopiusLibrary.Controllers
 {
@@ -10,10 +13,11 @@ namespace KopiusLibrary.Controllers
     public class BookController : ControllerBase
     {
         private readonly IBookRepository bookRepository;
-
-        public BookController(IBookRepository bookRepository)
+        private readonly IMapper _mapper;
+        public BookController(IBookRepository bookRepository, IMapper mapper)
         {
             this.bookRepository = bookRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -28,29 +32,22 @@ namespace KopiusLibrary.Controllers
             IEnumerable<BookDTO> books = bookRepository.GetByName(title).ToList();
             return books.Any() ? Ok(books) : NotFound();
         }
-        //[HttpPost]
-        //public ActionResult Post([FromBody] Book book)
-        //{
-        //    if (book != null)
-        //    {
-        //        if(book.AuthorBook != null)
-        //        {
-
-        //        }
-        //        else
-        //        {
-
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return BadRequest();
-        //    }           
-        //}
-
-        private bool AlreadyExists(string isbn)
+        [HttpPost]
+        public ActionResult Post([FromBody] BookDTO book)
         {
-            return !Books().Value.Any(b => b.Equals(isbn));
+            if (bookRepository.InvalidBook(book))
+            {
+                return BadRequest();
+            }
+            bookRepository.Add(book);
+            return Ok();
+        }
+
+        [HttpPut]
+        public ActionResult Put([FromBody] BookUpdateDTO bookDTO)
+        {
+            Response res = bookRepository.Update(bookDTO);
+            return res.Code == 200 ? Ok(res) : BadRequest(res);
         }
     }
 }
